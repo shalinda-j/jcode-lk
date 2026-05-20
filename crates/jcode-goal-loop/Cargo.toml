@@ -1,0 +1,22 @@
+[package]
+name = "jcode-goal-loop"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
+jcode-plan = { path = "../jcode-plan" }
+jcode-swarm-core = { path = "../jcode-swarm-core" }
+jcode-task-types = { path = "../jcode-task-types" }
+jcode-verifier = { path = "../jcode-verifier" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+tokio = { version = "1", features = ["macros", "rt", "sync", "time"] }
+tracing = "0.1"
+
+[dev-dependencies]
+tempfile = "3"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }

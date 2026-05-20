@@ -3490,6 +3490,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "jcode-goal-loop"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "jcode-plan",
+ "jcode-swarm-core",
+ "jcode-task-types",
+ "jcode-verifier",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "thiserror 1.0.69",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "jcode-import-core"
 version = "0.1.0"
 dependencies = [
