@@ -9,6 +9,7 @@
 mod budget;
 mod controller;
 mod events;
+pub mod prompts;
 mod traits;
 
 pub use budget::{BudgetExceeded, BudgetTracker, UsageDelta};
@@ -16,6 +17,10 @@ pub use controller::{
     GoalLoopController, GoalLoopOutcome, GoalLoopSnapshot, ItemRecord, ItemRunResult,
 };
 pub use events::{GoalLoopEvent, ItemOutcomeKind};
+pub use prompts::{
+    DECOMPOSE_PROMPT, LlmCaller, LlmPlanner, REPLAN_PROMPT, VERIFIER_PROMPT, extract_json,
+    parse_plan_items,
+};
 pub use traits::{DispatcherError, ItemOutcome, Planner, PlannerError, SwarmDispatcher};
 
 #[cfg(test)]
