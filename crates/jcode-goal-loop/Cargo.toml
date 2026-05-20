@@ -8,6 +8,7 @@ publish = false
 async-trait = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
 jcode-plan = { path = "../jcode-plan" }
+jcode-side-panel-types = { path = "../jcode-side-panel-types" }
 jcode-swarm-core = { path = "../jcode-swarm-core" }
 jcode-task-types = { path = "../jcode-task-types" }
 jcode-verifier = { path = "../jcode-verifier" }
