@@ -31,6 +31,7 @@ members = [
     "crates/jcode-session-types",
     "crates/jcode-storage",
     "crates/jcode-side-panel-types",
+    "crates/jcode-verifier",
     "crates/jcode-azure-auth",
     "crates/jcode-notify-email",
     "crates/jcode-provider-metadata",

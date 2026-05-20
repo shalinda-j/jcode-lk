@@ -3860,6 +3860,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "jcode-verifier"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "glob",
+ "ignore",
+ "jcode-task-types",
+ "regex",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "thiserror 1.0.69",
+ "tokio",
+]
+
+[[package]]
 name = "jni"
 version = "0.21.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
