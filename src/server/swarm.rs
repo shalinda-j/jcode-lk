@@ -976,6 +976,7 @@ mod tests {
             file_scope: Vec::new(),
             blocked_by: Vec::new(),
             assigned_to: None,
+            success_check: None,
         }
     }
 
@@ -1067,6 +1068,7 @@ mod tests {
                         file_scope: Vec::new(),
                         blocked_by: Vec::new(),
                         assigned_to: None,
+                        success_check: None,
                     },
                     PlanItem {
                         content: "follow-up".to_string(),
@@ -1077,6 +1079,7 @@ mod tests {
                         file_scope: Vec::new(),
                         blocked_by: vec!["setup".to_string()],
                         assigned_to: None,
+                        success_check: None,
                     },
                 ],
                 version: 2,
@@ -1100,6 +1103,7 @@ mod tests {
                 file_scope: Vec::new(),
                 blocked_by: Vec::new(),
                 assigned_to: Some("worker".to_string()),
+                success_check: None,
             },
             PlanItem {
                 content: "follow-up".to_string(),
@@ -1110,6 +1114,7 @@ mod tests {
                 file_scope: Vec::new(),
                 blocked_by: vec!["setup".to_string()],
                 assigned_to: None,
+                success_check: None,
             },
         ];
 
@@ -1164,6 +1169,7 @@ mod tests {
                     file_scope: Vec::new(),
                     blocked_by: Vec::new(),
                     assigned_to: Some("coord".to_string()),
+                    success_check: None,
                 }],
                 version: 1,
                 participants: HashSet::from(["coord".to_string()]),
@@ -1470,6 +1476,7 @@ mod tests {
                     file_scope: Vec::new(),
                     blocked_by: Vec::new(),
                     assigned_to: Some("worker".to_string()),
+                    success_check: None,
                 }],
                 version: 1,
                 participants: HashSet::from(["worker".to_string()]),

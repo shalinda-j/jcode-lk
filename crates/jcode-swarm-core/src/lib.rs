@@ -419,6 +419,7 @@ mod tests {
             file_scope: Vec::new(),
             blocked_by: Vec::new(),
             assigned_to: None,
+            success_check: None,
         }
     }
 

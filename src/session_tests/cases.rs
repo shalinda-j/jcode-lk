@@ -838,6 +838,7 @@ fn test_redacted_for_export_redacts_replay_events() -> Result<()> {
             file_scope: Vec::new(),
             blocked_by: vec![],
             assigned_to: None,
+            success_check: None,
         }],
         vec![],
         Some("ANTHROPIC_API_KEY=sk-ant-secret-value".to_string()),

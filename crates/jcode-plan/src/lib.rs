@@ -1,3 +1,4 @@
+use jcode_task_types::SuccessCheck;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeSet, HashMap, HashSet};
 
@@ -19,6 +20,8 @@ pub struct PlanItem {
     pub blocked_by: Vec<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub assigned_to: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success_check: Option<SuccessCheck>,
 }
 
 /// Durable progress associated with a swarm plan task.
@@ -61,6 +64,8 @@ pub struct SwarmPlanItemSpec {
     pub file_scope: Vec<String>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub blocked_by: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success_check: Option<SuccessCheck>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -122,6 +127,7 @@ impl VersionedPlan {
                     subsystem: item.subsystem.clone(),
                     file_scope: item.file_scope.clone(),
                     blocked_by: item.blocked_by.clone(),
+                    success_check: item.success_check.clone(),
                 })
                 .collect(),
         }
@@ -664,6 +670,7 @@ mod tests {
             file_scope: Vec::new(),
             blocked_by: blocked_by.iter().map(|value| value.to_string()).collect(),
             assigned_to: None,
+            success_check: None,
         }
     }
 
