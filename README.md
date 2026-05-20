@@ -304,6 +304,23 @@ Agents are also able to spawn their own swarms autonomously. They have a swarm t
 
 ---
 
+## Goal-Driven Loops (preview)
+
+`jcode goal run "<one-sentence goal>"` decomposes a goal into plan items, dispatches sub-agents per item, and verifies each result with a mechanical check (test runner, regex, glob, or a structured agent assertion). The controller only stops when every `success_criterion` passes — or when a budget cap is hit ($2.00 / 30 min / 3 retries per item by default). Today the loop runs end-to-end under `--dry-run` against a stub planner/dispatcher; the live LLM + swarm wiring is on deck. See [`docs/GOAL_LOOPS.md`](docs/GOAL_LOOPS.md) for the state machine, stop conditions, and the public traits (`Planner`, `SwarmDispatcher`, `LlmCaller`) you can implement to plug in.
+
+```
+$ jcode goal run "Add rate limiting to /api/login, max 5/min per IP, with tests" --dry-run
+→ phase: define → decompose
+· plan ready (attempt 1): 3 item(s)
+· start  research / · finish research Passed
+· start  implement / · finish implement Passed
+· start  verify    / · finish verify    Passed [PASS: …]
+✓ done
+goal DONE — 3 item(s) passed
+```
+
+---
+
 ## OAuth and Providers
 
 jcode works with subscription-backed OAuth flows and many provider integrations, so you can use the models you already pay for and still fall back to direct API providers when needed.

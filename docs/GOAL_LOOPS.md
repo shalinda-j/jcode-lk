@@ -1,6 +1,6 @@
 # Goal-Driven Loops
 
-Status: **Phase 0 — types landed, runtime not yet wired.**
+Status: **Phases 0–6 landed. Live LLM + swarm wiring (`jcode goal run` without `--dry-run`) still pending.**
 
 `/goal` mode lets a user state a high-level outcome in one sentence and have
 jcode drive the swarm against it until the goal's **success criteria** all
@@ -132,21 +132,27 @@ deliberately conservative; we can revisit once we have telemetry.
    the safety allowlist, the controller asks the user **once** at goal start.
    In non-interactive mode (`--no-tui`), the goal aborts instead of asking.
 
-## Out of scope for Phase 0
+## What's landed (Phases 0–6)
 
-- The `GoalLoopController` state machine.
-- The `jcode-verifier` crate and check executors.
-- Decompose / replan prompts.
-- Side-panel DAG view.
-- `/goal` slash command and CLI subcommand.
-- Telemetry counters.
+- `jcode-task-types` — all the types listed above; serde-round-trip tested.
+- `jcode-verifier` — `run_check()` for every `SuccessCheckKind`. `AgentAssertionRunner` trait so the agent-assertion path stays provider-agnostic; `NullAgentAssertion` is the default until a real LLM-backed runner is wired in.
+- `jcode-goal-loop` — the `GoalLoopController` state machine, `BudgetTracker`, planner/verifier prompts, and JSON plan parser. `Planner` and `SwarmDispatcher` are traits so the controller is unit-testable without sub-agents or providers.
+- Side-panel rendering — `render_snapshot_markdown` emits a markdown page per active goal showing phase, budget, and per-item status. The TUI's side panel picks it up via the standard `SidePanelPage` shape.
+- CLI — `jcode goal run "<text>" [--budget-* ] [--dry-run] [--ndjson]`. `--dry-run` runs against the in-crate stub planner/dispatcher; the live path errors with a pointer to this doc until the real wiring is done.
+- Protocol — `ServerEvent::GoalLoopEvent { goal_id, event }` for streaming controller events to clients (additive — old clients ignore).
+- Telemetry — `record_goal_loop_started / phase / done / aborted` thin wrappers around `record_command_family`. `GoalLoopAbortReason::classify` buckets free-form abort reasons into stable categories.
 
-These ship in PR-2 through PR-5. See the implementation plan in the session
-transcript for sequencing.
+## Still to wire (not in this PR)
+
+- An `LlmCaller` implementation backed by the configured provider (cheapest model by default, per the decision above). Once it exists, `LlmPlanner::new(caller)` and an AgentAssertion runner can replace the stubs.
+- A `SwarmDispatcher` implementation that spawns a session-scoped sub-agent through `src/server/swarm.rs`, attaches the prompt + tools, and parses the structured completion report back into an `ItemOutcome`.
+- A `/goal` slash command that takes the goal text from inside a session and starts a controller on the server side. The CLI path proves the wiring; the slash command is the same handler, just invoked from the session loop.
 
 ## Compatibility
 
 Persisted goals from earlier versions deserialize unchanged: `budget` and
 `loop_phase` default to `None`, and `PlanItem.success_check` defaults to
 `None`. Code that constructs these structs by literal had to add
-`success_check: None` (mechanical change, no behavior shift).
+`success_check: None` (mechanical change, no behavior shift). The new
+`ServerEvent::GoalLoopEvent` is additive; old clients that don't know the
+variant should drop the message rather than crash.

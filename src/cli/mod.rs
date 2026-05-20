@@ -3,6 +3,7 @@ pub mod auth_test;
 pub mod commands;
 pub mod debug;
 pub mod dispatch;
+pub mod goal;
 pub mod hot_exec;
 pub mod login;
 pub mod output;

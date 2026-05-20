@@ -782,6 +782,79 @@ pub fn record_command_family(command: &str) {
     maybe_emit_session_start();
 }
 
+// ---- Goal-driven loop counters ----
+//
+// Thin wrappers around `record_command_family` so the loop has a stable
+// telemetry surface without a new event type. Phase transitions and terminal
+// outcomes are coarse-grained on purpose — sub-agent and tool-call telemetry
+// is already recorded by the existing instrumentation those calls flow
+// through.
+
+pub fn record_goal_loop_started() {
+    record_command_family("goal_loop.started");
+}
+
+pub fn record_goal_loop_phase(phase: &str) {
+    let mut name = String::from("goal_loop.phase.");
+    name.push_str(phase);
+    record_command_family(&name);
+}
+
+pub fn record_goal_loop_done(items_completed: usize) {
+    record_command_family("goal_loop.done");
+    let _ = items_completed; // intentionally not bucketed; bucketing belongs in the worker
+}
+
+pub fn record_goal_loop_aborted(reason_category: GoalLoopAbortReason) {
+    record_command_family(match reason_category {
+        GoalLoopAbortReason::UserAbort => "goal_loop.aborted.user",
+        GoalLoopAbortReason::Tokens => "goal_loop.aborted.tokens",
+        GoalLoopAbortReason::Dollars => "goal_loop.aborted.dollars",
+        GoalLoopAbortReason::Wall => "goal_loop.aborted.wall",
+        GoalLoopAbortReason::Retries => "goal_loop.aborted.retries",
+        GoalLoopAbortReason::PlannerFailure => "goal_loop.aborted.planner",
+        GoalLoopAbortReason::Other => "goal_loop.aborted.other",
+    });
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum GoalLoopAbortReason {
+    UserAbort,
+    Tokens,
+    Dollars,
+    Wall,
+    Retries,
+    PlannerFailure,
+    Other,
+}
+
+impl GoalLoopAbortReason {
+    /// Classify a free-form abort reason string from the controller into one
+    /// of the bucketed categories. Defensive: returns `Other` for unknown
+    /// strings rather than panicking, so the telemetry shape stays stable as
+    /// new reasons appear.
+    pub fn classify(reason: &str) -> Self {
+        let lower = reason.to_ascii_lowercase();
+        if lower.contains("user abort") {
+            Self::UserAbort
+        } else if lower.contains("token") {
+            Self::Tokens
+        } else if lower.contains("dollar") || lower.contains("usd") {
+            Self::Dollars
+        } else if lower.contains("wall") {
+            Self::Wall
+        } else if lower.contains("retry") || lower.contains("retries") {
+            Self::Retries
+        } else if lower.contains("planner") || lower.contains("decompose")
+            || lower.contains("replan")
+        {
+            Self::PlannerFailure
+        } else {
+            Self::Other
+        }
+    }
+}
+
 fn post_payload(payload: serde_json::Value, timeout: Duration) -> bool {
     let client = match reqwest::blocking::Client::builder()
         .timeout(timeout)
