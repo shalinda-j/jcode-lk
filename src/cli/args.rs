@@ -382,6 +382,50 @@ pub(crate) enum Command {
         #[command(subcommand)]
         action: RestartCommand,
     },
+
+    /// Run a goal-driven loop: planner decomposes the goal, sub-agents
+    /// execute, verifier decides PASS / REPAIR / REPLAN, controller stops on
+    /// success or budget cap. See docs/GOAL_LOOPS.md.
+    Goal {
+        #[command(subcommand)]
+        action: GoalCommand,
+    },
+}
+
+#[derive(Subcommand, Debug)]
+pub(crate) enum GoalCommand {
+    /// Start a new goal-driven loop from a one-line description.
+    Run {
+        /// One-sentence goal description. Quote it.
+        message: String,
+
+        /// Cap total tokens used (sum across sub-agents). No cap by default.
+        #[arg(long)]
+        budget_tokens: Option<u64>,
+
+        /// Cap total dollars used, in cents (default 200 = $2.00).
+        #[arg(long)]
+        budget_usd_cents: Option<u32>,
+
+        /// Cap wall-clock duration in seconds (default 1800 = 30 min).
+        #[arg(long)]
+        budget_secs: Option<u32>,
+
+        /// Max retries per plan item before the loop aborts on that item.
+        #[arg(long, default_value = "3")]
+        retries_per_item: u8,
+
+        /// Run against the stub planner/dispatcher (no LLM, no real
+        /// sub-agents). Useful for verifying the wiring end-to-end and for
+        /// CI smoke tests.
+        #[arg(long)]
+        dry_run: bool,
+
+        /// Emit newline-delimited JSON events to stdout instead of a human
+        /// summary.
+        #[arg(long)]
+        ndjson: bool,
+    },
 }
 
 #[derive(Subcommand, Debug)]

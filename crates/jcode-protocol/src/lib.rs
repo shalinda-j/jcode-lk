@@ -1190,6 +1190,19 @@ pub enum ServerEvent {
         /// Tool call ID this is associated with
         tool_call_id: String,
     },
+
+    /// A goal-driven loop emitted a controller event. Added in v0.13 for
+    /// /goal mode. Clients that don't understand this variant should ignore
+    /// the message (additive — old clients keep working).
+    #[serde(rename = "goal_loop_event")]
+    GoalLoopEvent {
+        /// Goal id this event refers to.
+        goal_id: String,
+        /// Serialized `jcode_goal_loop::GoalLoopEvent` payload. Encoded as a
+        /// JSON value to keep the wire schema decoupled from the goal-loop
+        /// crate.
+        event: serde_json::Value,
+    },
 }
 
 /// Summary of a tool call for the comm_summary response

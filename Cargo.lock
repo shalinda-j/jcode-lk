@@ -3260,7 +3260,7 @@ checksum = "92ecc6618181def0457392ccd0ee51198e065e016d1d527a7ac1b6dc7c1f09d2"
 
 [[package]]
 name = "jcode"
-version = "0.11.4"
+version = "0.12.0"
 dependencies = [
  "agentgrep",
  "anyhow",
@@ -3299,6 +3299,7 @@ dependencies = [
  "jcode-core",
  "jcode-embedding",
  "jcode-gateway-types",
+ "jcode-goal-loop",
  "jcode-import-core",
  "jcode-memory-types",
  "jcode-message-types",
@@ -3334,6 +3335,7 @@ dependencies = [
  "jcode-tui-workspace",
  "jcode-update-core",
  "jcode-usage-types",
+ "jcode-verifier",
  "libc",
  "open",
  "proctitle",
@@ -3490,6 +3492,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "jcode-goal-loop"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "jcode-plan",
+ "jcode-side-panel-types",
+ "jcode-swarm-core",
+ "jcode-task-types",
+ "jcode-verifier",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "thiserror 1.0.69",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "jcode-import-core"
 version = "0.1.0"
 dependencies = [
@@ -3581,6 +3602,7 @@ dependencies = [
 name = "jcode-plan"
 version = "0.1.0"
 dependencies = [
+ "jcode-task-types",
  "serde",
 ]
 
@@ -3703,6 +3725,7 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -3855,6 +3878,22 @@ version = "0.1.0"
 dependencies = [
  "serde",
  "serde_json",
+]
+
+[[package]]
+name = "jcode-verifier"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "glob",
+ "ignore",
+ "jcode-task-types",
+ "regex",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "thiserror 1.0.69",
+ "tokio",
 ]
 
 [[package]]

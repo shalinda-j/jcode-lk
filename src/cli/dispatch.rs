@@ -311,6 +311,9 @@ pub(crate) async fn run_main(mut args: Args) -> Result<()> {
             RestartCommand::Status => commands::run_restart_status_command()?,
             RestartCommand::Clear => commands::run_restart_clear_command()?,
         },
+        Some(Command::Goal { action }) => {
+            crate::cli::goal::dispatch(action).await?;
+        }
         None => run_default_command(args).await?,
     }
 

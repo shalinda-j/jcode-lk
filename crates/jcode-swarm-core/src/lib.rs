@@ -12,6 +12,8 @@ pub enum SwarmRole {
     Agent,
     Coordinator,
     WorktreeManager,
+    Planner,
+    Verifier,
     Other(String),
 }
 
@@ -21,6 +23,8 @@ impl SwarmRole {
             Self::Agent => Cow::Borrowed("agent"),
             Self::Coordinator => Cow::Borrowed("coordinator"),
             Self::WorktreeManager => Cow::Borrowed("worktree_manager"),
+            Self::Planner => Cow::Borrowed("planner"),
+            Self::Verifier => Cow::Borrowed("verifier"),
             Self::Other(value) => Cow::Borrowed(value.as_str()),
         }
     }
@@ -32,6 +36,8 @@ impl From<String> for SwarmRole {
             "agent" => Self::Agent,
             "coordinator" => Self::Coordinator,
             "worktree_manager" => Self::WorktreeManager,
+            "planner" => Self::Planner,
+            "verifier" => Self::Verifier,
             _ => Self::Other(value),
         }
     }
@@ -419,6 +425,7 @@ mod tests {
             file_scope: Vec::new(),
             blocked_by: Vec::new(),
             assigned_to: None,
+            success_check: None,
         }
     }
 

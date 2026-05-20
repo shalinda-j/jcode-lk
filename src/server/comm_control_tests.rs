@@ -81,6 +81,7 @@ fn plan_item(id: &str, status: &str, priority: &str, blocked_by: &[&str]) -> Pla
         file_scope: Vec::new(),
         blocked_by: blocked_by.iter().map(|value| value.to_string()).collect(),
         assigned_to: None,
+        success_check: None,
     }
 }
 

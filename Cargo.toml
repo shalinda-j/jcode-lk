@@ -31,6 +31,8 @@ members = [
     "crates/jcode-session-types",
     "crates/jcode-storage",
     "crates/jcode-side-panel-types",
+    "crates/jcode-verifier",
+    "crates/jcode-goal-loop",
     "crates/jcode-azure-auth",
     "crates/jcode-notify-email",
     "crates/jcode-provider-metadata",
@@ -149,6 +151,8 @@ jcode-auth-types = { path = "crates/jcode-auth-types" }
 jcode-azure-auth = { path = "crates/jcode-azure-auth" }
 jcode-agent-runtime = { path = "crates/jcode-agent-runtime" }
 jcode-ambient-types = { path = "crates/jcode-ambient-types" }
+jcode-goal-loop = { path = "crates/jcode-goal-loop" }
+jcode-verifier = { path = "crates/jcode-verifier" }
 jcode-notify-email = { path = "crates/jcode-notify-email" }
 jcode-provider-metadata = { path = "crates/jcode-provider-metadata" }
 jcode-provider-core = { path = "crates/jcode-provider-core" }

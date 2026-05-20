@@ -40,6 +40,7 @@ fn persisted_swarm_state_round_trips_and_marks_running_stale() {
                 file_scope: Vec::new(),
                 blocked_by: Vec::new(),
                 assigned_to: Some("session-1".to_string()),
+                success_check: None,
             }],
             version: 3,
             participants: ["session-1".to_string(), "session-2".to_string()]
